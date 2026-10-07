@@ -55,3 +55,64 @@ dialog::backdrop{background:rgba(15,23,42,.5)}
   .timeline-item{grid-template-columns:86px 1fr}.timeline-item .card-actions{grid-column:1/-1}
   .task-card{grid-template-columns:1fr}.card-actions{justify-content:flex-start}
 }
+
+
+/* --- Planner / sticky-note schedule --- */
+.planner-help{
+  margin-bottom:12px;padding:10px 12px;border-radius:10px;background:#f8fafc;
+  color:var(--muted);font-size:.9rem;border:1px solid var(--line)
+}
+.planner-wrap{display:grid;grid-template-columns:64px 1fr;gap:10px;align-items:start}
+.planner-labels{position:relative}
+.planner-time{
+  position:absolute;left:0;right:0;transform:translateY(-.6em);
+  color:#9ca3af;font-size:.75rem;text-align:right;padding-right:4px
+}
+.planner-time.major{color:#4b5563;font-weight:700}
+.planner-canvas{
+  position:relative;border:1px solid var(--line);border-radius:14px;
+  background:
+    repeating-linear-gradient(
+      to bottom,
+      #ffffff 0,
+      #ffffff 47px,
+      #eef2f7 47px,
+      #eef2f7 48px
+    );
+  overflow:hidden;min-width:0
+}
+.planner-task,.planner-break{
+  position:absolute;left:8px;right:8px;border-radius:12px
+}
+.planner-task{
+  display:grid;grid-template-columns:36px minmax(0,1fr) auto;gap:8px;align-items:center;
+  padding:7px 8px;background:#fff;border:1px solid #dbe2ea;
+  box-shadow:0 3px 10px rgba(15,23,42,.08);z-index:2
+}
+.planner-task.must{border-left:5px solid #dc2626}
+.planner-task.recommended{border-left:5px solid #ea580c}
+.planner-task.optional{border-left:5px solid #2563eb}
+.planner-task.fixed{border-left:5px solid #7c3aed;background:#faf5ff}
+.planner-task.manual{border-left:5px solid #059669;background:#ecfdf5}
+.planner-task.dragging{z-index:20;opacity:.92;box-shadow:0 14px 30px rgba(15,23,42,.22)}
+.drag-handle{
+  border:0;background:transparent;padding:8px 4px;cursor:grab;font-size:1.05rem;
+  touch-action:none;user-select:none;color:#6b7280
+}
+.drag-handle:active{cursor:grabbing}
+.planner-task-body{min-width:0}
+.planner-task-body b{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.planner-task-actions{display:flex;gap:4px;flex-wrap:wrap;justify-content:flex-end}
+.planner-task-actions button{padding:.32rem .48rem;font-size:.76rem}
+.planner-break{
+  background:rgba(148,163,184,.12);border:1px dashed #cbd5e1;
+  display:flex;align-items:center;padding:0 10px;color:#64748b;font-size:.8rem;z-index:1
+}
+
+@media(max-width:760px){
+  .planner-wrap{grid-template-columns:48px 1fr;gap:6px}
+  .planner-task{grid-template-columns:30px minmax(0,1fr);padding:6px}
+  .planner-task-actions{grid-column:2;justify-content:flex-start}
+  .planner-task-actions button{padding:.28rem .42rem}
+  .planner-task,.planner-break{left:5px;right:5px}
+}
