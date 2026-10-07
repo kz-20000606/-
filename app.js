@@ -348,10 +348,10 @@ function initApp(){
     const defer=e.target.closest('[data-defer]');if(defer)return deferTask(defer.dataset.defer);
   });
 
-  $('.tab').forEach(b=>b.addEventListener('click',()=>{
-    $('.tab').forEach(x=>x.classList.remove('active'));
+  $$('.tab').forEach(b=>b.addEventListener('click',()=>{
+    $$('.tab').forEach(x=>x.classList.remove('active'));
     b.classList.add('active');
-    $('.view').forEach(v=>v.classList.remove('active'));
+    $$('.view').forEach(v=>v.classList.remove('active'));
     const target=$('#view-'+b.dataset.view); if(target)target.classList.add('active');
   }));
 
