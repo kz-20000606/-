@@ -19,8 +19,20 @@ let state=load();
 let todaySchedule=[];
 
 function load(){
-  try{return {...defaultState,...JSON.parse(localStorage.getItem(STORE_KEY)||'{}')};}
-  catch{return structuredClone(defaultState);}
+  try{
+    const raw=JSON.parse(localStorage.getItem(STORE_KEY)||'{}')||{};
+    return {
+      tasks:Array.isArray(raw.tasks)?raw.tasks:[],
+      settings:{...defaultState.settings,...(raw.settings||{})},
+      completionLog:raw.completionLog&&typeof raw.completionLog==='object'?raw.completionLog:{}
+    };
+  }catch{
+    return {
+      tasks:[],
+      settings:{...defaultState.settings},
+      completionLog:{}
+    };
+  }
 }
 function save(){localStorage.setItem(STORE_KEY,JSON.stringify(state));}
 function parseDate(v){return v?new Date(v):null}
@@ -324,16 +336,55 @@ function addDemo(){
   );save();scheduleToday();
 }
 
-document.addEventListener('click',e=>{
-  const done=e.target.closest('[data-done]');if(done)return completeTask(done.dataset.done,Number(done.dataset.min));
-  const edit=e.target.closest('[data-edit]');if(edit)return openTask(taskById(edit.dataset.edit));
-  const defer=e.target.closest('[data-defer]');if(defer)return deferTask(defer.dataset.defer);
-});
-$$('.tab').forEach(b=>b.onclick=()=>{$$('.tab').forEach(x=>x.classList.remove('active'));b.classList.add('active');$$('.view').forEach(v=>v.classList.remove('active'));$('#view-'+b.dataset.view).classList.add('active')});
-$('#addTaskBtn').onclick=()=>openTask();$('#rescheduleBtn').onclick=scheduleToday;$('#dayDoneBtn').onclick=dayDone;
-$('#closeDialogBtn').onclick=()=>$('#taskDialog').close();$('#cancelBtn').onclick=()=>$('#taskDialog').close();$('#deleteTaskBtn').onclick=deleteTask;
-$('#scheduleMode').onchange=()=>renderModeFields({});$('#recurrence').onchange=()=>renderWeekdays([]);
-$('#taskForm').onsubmit=e=>{e.preventDefault();saveTask()};$('#taskFilter').onchange=renderAllTasks;$('#saveSettingsBtn').onclick=saveSettings;
-$('#exportBtn').onclick=exportData;$('#importInput').onchange=e=>e.target.files[0]&&importData(e.target.files[0]);$('#demoBtn').onclick=addDemo;
+function safeCloseDialog(){
+  const d=$('#taskDialog');
+  if(d&&d.open)d.close();
+}
+function initApp(){
+  document.addEventListener('click',e=>{
+    const done=e.target.closest('[data-done]');if(done)return completeTask(done.dataset.done,Number(done.dataset.min));
+    const edit=e.target.closest('[data-edit]');if(edit)return openTask(taskById(edit.dataset.edit));
+    const defer=e.target.closest('[data-defer]');if(defer)return deferTask(defer.dataset.defer);
+  });
 
-scheduleToday();
+  $('.tab').forEach(b=>b.addEventListener('click',()=>{
+    $('.tab').forEach(x=>x.classList.remove('active'));
+    b.classList.add('active');
+    $('.view').forEach(v=>v.classList.remove('active'));
+    const target=$('#view-'+b.dataset.view); if(target)target.classList.add('active');
+  }));
+
+  const add=$('#addTaskBtn');
+  if(add)add.addEventListener('click',()=>openTask());
+
+  const re=$('#rescheduleBtn'); if(re)re.addEventListener('click',scheduleToday);
+  const dd=$('#dayDoneBtn'); if(dd)dd.addEventListener('click',dayDone);
+  const close=$('#closeDialogBtn'); if(close)close.addEventListener('click',safeCloseDialog);
+  const cancel=$('#cancelBtn'); if(cancel)cancel.addEventListener('click',safeCloseDialog);
+  const del=$('#deleteTaskBtn'); if(del)del.addEventListener('click',deleteTask);
+  const mode=$('#scheduleMode'); if(mode)mode.addEventListener('change',()=>renderModeFields({}));
+  const rec=$('#recurrence'); if(rec)rec.addEventListener('change',()=>renderWeekdays([]));
+  const form=$('#taskForm'); if(form)form.addEventListener('submit',e=>{e.preventDefault();saveTask()});
+  const filter=$('#taskFilter'); if(filter)filter.addEventListener('change',renderAllTasks);
+  const saveBtn=$('#saveSettingsBtn'); if(saveBtn)saveBtn.addEventListener('click',saveSettings);
+  const exp=$('#exportBtn'); if(exp)exp.addEventListener('click',exportData);
+  const imp=$('#importInput'); if(imp)imp.addEventListener('change',e=>e.target.files[0]&&importData(e.target.files[0]));
+  const demo=$('#demoBtn'); if(demo)demo.addEventListener('click',addDemo);
+
+  try{
+    scheduleToday();
+  }catch(err){
+    console.error(err);
+    const banner=$('#overloadBanner');
+    if(banner){
+      banner.textContent='初期表示でエラーが発生しました。設定データを確認してください。';
+      banner.classList.remove('hidden');
+    }
+  }
+}
+
+if(document.readyState==='loading'){
+  document.addEventListener('DOMContentLoaded',initApp);
+}else{
+  initApp();
+}
