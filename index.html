@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Smart Schedule</title>
-  <link rel="stylesheet" href="styles-v5.css">
+  <link rel="stylesheet" href="styles-v6.css">
 </head>
 <body>
   <div class="app-shell">
@@ -46,7 +46,21 @@
             <h2>今日の時間割</h2>
             <button id="dayDoneBtn" class="ghost">今日はここまで</button>
           </div>
-          <div id="timeline" class="timeline"></div>
+          <div class="schedule-workspace">
+            <div class="schedule-column">
+              <div id="timeline" class="timeline"></div>
+            </div>
+            <aside class="memo-column">
+              <div class="memo-toolbar">
+                <div>
+                  <h3>メモ・付箋</h3>
+                  <p>自由に貼って、移動・サイズ変更できます。</p>
+                </div>
+                <button id="addMemoBtn" class="primary" type="button">＋ 付箋を作成</button>
+              </div>
+              <div id="memoBoard" class="memo-board" aria-label="自由メモスペース"></div>
+            </aside>
+          </div>
         </section>
 
         <section class="panel">
@@ -114,12 +128,59 @@
           <p>付箋置き場ではすべて同じ大きさですが、時間割に置くと所要時間に応じて高さが変わります。60分のタスクなら1時間ぶん、90分なら1時間30分ぶん表示されます。</p>
           <h3>4. 配置後に動かす</h3>
           <p>時間割上の「⋮⋮」を上下にドラッグすると時刻を変更できます。「戻す」で付箋置き場へ戻せます。</p>
-          <h3>5. 終わったら完了</h3>
+          <h3>5. 右側をメモ帳として使う</h3>
+          <p>時間割の右側は自由な白紙スペースです。「＋ 付箋を作成」からメモを作成できます。色は赤・黄・緑・青から選べ、初期色は緑です。</p>
+          <p>作成した付箋は上部をドラッグして自由に移動できます。右下をドラッグすると大きさを自由に変更できます。</p>
+          <h3>6. 終わったら完了</h3>
           <p>「完了」を押すとそのタスクを完了扱いにします。</p>
         </section>
       </section>
     </main>
   </div>
+
+  <dialog id="memoDialog">
+    <form id="memoForm" method="dialog">
+      <div class="dialog-head">
+        <h2 id="memoDialogTitle">付箋を作成</h2>
+        <button type="button" id="closeMemoDialogBtn" class="icon-btn">×</button>
+      </div>
+
+      <input type="hidden" id="memoId">
+
+      <label>付箋に書く内容
+        <textarea id="memoText" rows="6" maxlength="1000" placeholder="急に入った仕事、あとで確認すること、思いついたことなど" required></textarea>
+      </label>
+
+      <fieldset class="memo-color-fieldset">
+        <legend>付箋の色</legend>
+        <div class="memo-color-options">
+          <label class="memo-color-option red">
+            <input type="radio" name="memoColor" value="red">
+            <span>赤</span>
+          </label>
+          <label class="memo-color-option yellow">
+            <input type="radio" name="memoColor" value="yellow">
+            <span>黄</span>
+          </label>
+          <label class="memo-color-option green">
+            <input type="radio" name="memoColor" value="green" checked>
+            <span>緑</span>
+          </label>
+          <label class="memo-color-option blue">
+            <input type="radio" name="memoColor" value="blue">
+            <span>青</span>
+          </label>
+        </div>
+      </fieldset>
+
+      <div class="dialog-actions">
+        <button type="button" id="deleteMemoBtn" class="danger hidden">削除</button>
+        <span class="spacer"></span>
+        <button type="button" id="cancelMemoBtn">キャンセル</button>
+        <button type="submit" class="primary">保存</button>
+      </div>
+    </form>
+  </dialog>
 
   <dialog id="taskDialog">
     <form id="taskForm" method="dialog">
@@ -193,6 +254,6 @@
     </form>
   </dialog>
 
-  <script src="app-v9.js"></script>
+  <script src="app-v10.js"></script>
 </body>
 </html>
