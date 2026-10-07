@@ -282,6 +282,7 @@ function openTask(t=null){
   $('#taskDialog').showModal();
 }
 function renderModeFields(t={}){
+  t=t||{};
   const mode=$('#scheduleMode').value;const box=$('#modeFields');
   if(mode==='fixed')box.innerHTML='<div class="form-grid"><label>日付<input id="startDate" type="date" value="'+(t.startDate||todayKey())+'"></label><label>開始時刻<input id="fixedStart" type="time" value="'+(t.fixedStart||'18:00')+'"></label></div>';
   else if(mode==='date')box.innerHTML='<label>実施日<input id="startDate" type="date" value="'+(t.startDate||todayKey())+'"></label>';
