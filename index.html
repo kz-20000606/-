@@ -4,14 +4,18 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Smart Schedule</title>
-  <link rel="stylesheet" href="styles-v6.css">
+  <link rel="stylesheet" href="styles-v7.css">
 </head>
 <body>
   <div class="app-shell">
     <header class="topbar">
-      <div>
+      <div class="brand-block">
         <h1>Smart Schedule</h1>
+      </div>
+      <div class="date-nav">
+        <span class="date-chevron">‹</span>
         <p id="todayLabel"></p>
+        <span class="date-chevron">›</span>
       </div>
       <div class="top-actions">
         <button id="addTaskBtn" class="primary">＋ タスク追加</button>
@@ -29,44 +33,51 @@
       <section id="view-today" class="view active">
         <div id="overloadBanner" class="banner hidden"></div>
 
-        <div class="summary-grid">
-          <article class="stat-card"><span>時間割に配置済み</span><strong id="plannedMinutes">0分</strong></article>
-          <article class="stat-card"><span>完了</span><strong id="doneCount">0 / 0</strong></article>
-          <article class="stat-card"><span>今日必須</span><strong id="mustCount">0件</strong></article>
-          <article class="stat-card"><span>時間割の空き</span><strong id="freeMinutes">0分</strong></article>
-        </div>
-
-        <section class="panel focus-panel">
-          <div class="section-head"><h2>次にやること</h2></div>
-          <div id="nextTask"></div>
-        </section>
-
-        <section class="panel">
-          <div class="section-head">
-            <h2>今日の時間割</h2>
-            <button id="dayDoneBtn" class="ghost">今日はここまで</button>
-          </div>
-          <div class="schedule-workspace">
-            <div class="schedule-column">
-              <div id="timeline" class="timeline"></div>
+        <div class="today-layout">
+          <section class="planner-page">
+            <div class="summary-grid">
+              <article class="stat-card stat-blue"><span>時間割に配置済み</span><strong id="plannedMinutes">0分</strong><i></i></article>
+              <article class="stat-card stat-green"><span>完了</span><strong id="doneCount">0 / 0</strong><i></i></article>
+              <article class="stat-card stat-red"><span>今日必須</span><strong id="mustCount">0件</strong><i></i></article>
+              <article class="stat-card stat-yellow"><span>時間割の空き</span><strong id="freeMinutes">0分</strong><i></i></article>
             </div>
-            <aside class="memo-column">
-              <div class="memo-toolbar">
-                <div>
-                  <h3>メモ・付箋</h3>
-                  <p>自由に貼って、移動・サイズ変更できます。</p>
-                </div>
-                <button id="addMemoBtn" class="primary" type="button">＋ 付箋を作成</button>
-              </div>
-              <div id="memoBoard" class="memo-board" aria-label="自由メモスペース"></div>
-            </aside>
-          </div>
-        </section>
 
-        <section class="panel">
-          <div class="section-head"><h2>今日のTODO</h2></div>
-          <div id="todayTasks" class="task-list"></div>
-        </section>
+            <div class="planner-overview">
+              <section class="paper-section next-section">
+                <div class="section-head compact-head">
+                  <h2>次にやること</h2>
+                </div>
+                <div id="nextTask"></div>
+              </section>
+
+              <section class="paper-section todo-section">
+                <div class="section-head compact-head">
+                  <h2>今日のTODO</h2>
+                </div>
+                <div id="todayTasks" class="task-list compact-task-list"></div>
+              </section>
+            </div>
+
+            <section class="paper-section timeline-section">
+              <div class="section-head timeline-titlebar">
+                <h2>今日の時間割</h2>
+                <button id="dayDoneBtn" class="quiet-button">今日はここまで</button>
+              </div>
+              <div id="timeline" class="timeline"></div>
+            </section>
+          </section>
+
+          <aside class="memo-page">
+            <div class="memo-toolbar">
+              <div>
+                <h2>メモボード</h2>
+                <p>自由に貼って、移動・サイズ変更できます。</p>
+              </div>
+              <button id="addMemoBtn" class="memo-add-button" type="button">＋ 付箋を作成</button>
+            </div>
+            <div id="memoBoard" class="memo-board" aria-label="自由メモスペース"></div>
+          </aside>
+        </div>
       </section>
 
       <section id="view-tasks" class="view">
