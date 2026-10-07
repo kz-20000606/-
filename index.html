@@ -1,3 +1,85 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Smart Schedule</title>
+  <link rel="stylesheet" href="styles-v5.css">
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div>
+        <h1>Smart Schedule</h1>
+        <p id="todayLabel"></p>
+      </div>
+      <div class="top-actions">
+        <button id="addTaskBtn" class="primary">＋ タスク追加</button>
+      </div>
+    </header>
+
+    <nav class="tabs">
+      <button class="tab active" data-view="today">今日</button>
+      <button class="tab" data-view="tasks">タスク一覧</button>
+      <button class="tab" data-view="settings">設定</button>
+      <button class="tab" data-view="help">使い方</button>
+    </nav>
+
+    <main>
+      <section id="view-today" class="view active">
+        <div id="overloadBanner" class="banner hidden"></div>
+
+        <div class="summary-grid">
+          <article class="stat-card"><span>時間割に配置済み</span><strong id="plannedMinutes">0分</strong></article>
+          <article class="stat-card"><span>完了</span><strong id="doneCount">0 / 0</strong></article>
+          <article class="stat-card"><span>今日必須</span><strong id="mustCount">0件</strong></article>
+          <article class="stat-card"><span>時間割の空き</span><strong id="freeMinutes">0分</strong></article>
+        </div>
+
+        <section class="panel focus-panel">
+          <div class="section-head"><h2>次にやること</h2></div>
+          <div id="nextTask"></div>
+        </section>
+
+        <section class="panel">
+          <div class="section-head">
+            <h2>今日の時間割</h2>
+            <button id="dayDoneBtn" class="ghost">今日はここまで</button>
+          </div>
+          <div id="timeline" class="timeline"></div>
+        </section>
+
+        <section class="panel">
+          <div class="section-head"><h2>今日のTODO</h2></div>
+          <div id="todayTasks" class="task-list"></div>
+        </section>
+      </section>
+
+      <section id="view-tasks" class="view">
+        <section class="panel">
+          <div class="section-head">
+            <h2>タスク一覧</h2>
+            <div class="filters">
+              <select id="taskFilter">
+                <option value="open">未完了</option>
+                <option value="all">すべて</option>
+                <option value="done">完了</option>
+              </select>
+            </div>
+          </div>
+          <div id="allTasks" class="task-list"></div>
+        </section>
+      </section>
+
+      <section id="view-settings" class="view">
+        <section class="panel settings-grid">
+          <h2>時間割の表示設定</h2>
+          <label>平日の表示時間
+            <div class="row"><input id="weekdayStart" type="time"><span>〜</span><input id="weekdayEnd" type="time"></div>
+          </label>
+          <label>土日の表示時間
+            <div class="row"><input id="weekendStart" type="time"><span>〜</span><input id="weekendEnd" type="time"></div>
+          </label>
           <label>時間割の最小目盛り
             <input value="30分" disabled>
           </label>
@@ -22,18 +104,18 @@
           <p>「＋ タスク追加」から、内容・重要度・所要時間・実施方法・締切などを入力します。</p>
           <h3>2. 実施方法を選ぶ</h3>
           <ul>
-            <li><b>日時固定</b>：指定日時に固定して表示します。</li>
-            <li><b>日付指定</b>：指定日のどこかで行います。</li>
-            <li><b>期間指定</b>：開始日〜終了日の間、完了するまで毎日候補に出します。</li>
-            <li><b>締切まで候補</b>：開始可能日以降、締切まで「今日のタスク置き場」の候補に出します。</li>
+            <li><b>日時固定</b>：指定した日時にそのまま時間割へ表示します。</li>
+            <li><b>日付指定</b>：指定日に「今日のタスク置き場」へ表示します。</li>
+            <li><b>期間指定</b>：開始日〜終了日の間、完了するまで毎日「今日のタスク置き場」へ表示します。</li>
+            <li><b>締切まで候補</b>：開始可能日以降、締切まで候補として表示します。</li>
           </ul>
-          <h3>3. 今日画面を見る</h3>
-          <p>今日対象のタスクが時間割上部の「今日のタスク置き場」に並びます。そこから付箋をドラッグして、自分で時間割を作ります。</p>
-          <h3>4. 終わったら「完了」</h3>
-          <p>完了したタスクは時間割とTODOの両方に反映されます。分割タスクは実施した分だけ残り時間が減ります。</p>
-          <h3>5. できなかったら</h3>
-          <p>「延期」で日付指定タスクを翌日に送れます。時間割から外したい場合は「戻す」を押すと、上のタスク置き場へ戻ります。</p>
-          <h3>時間割の作り方</h3><p>上の小さな付箋はすべて同じ大きさです。時間割へ置くと、15分・30分・60分など所要時間に応じた高さで表示されます。</p>
+          <h3>3. 時間割を作る</h3>
+          <p>時間割上部の小さな付箋をつかみ、下の時間割へドラッグして配置します。</p>
+          <p>付箋置き場ではすべて同じ大きさですが、時間割に置くと所要時間に応じて高さが変わります。60分のタスクなら1時間ぶん、90分なら1時間30分ぶん表示されます。</p>
+          <h3>4. 配置後に動かす</h3>
+          <p>時間割上の「⋮⋮」を上下にドラッグすると時刻を変更できます。「戻す」で付箋置き場へ戻せます。</p>
+          <h3>5. 終わったら完了</h3>
+          <p>「完了」を押すとそのタスクを完了扱いにします。</p>
         </section>
       </section>
     </main>
@@ -54,20 +136,27 @@
         <label>カテゴリ<input id="category" placeholder="仕事・勉強・私用など"></label>
         <label>重要度
           <select id="importance">
-            <option value="1">★</option><option value="2">★★</option><option value="3" selected>★★★</option>
-            <option value="4">★★★★</option><option value="5">★★★★★</option>
+            <option value="1">★</option>
+            <option value="2">★★</option>
+            <option value="3" selected>★★★</option>
+            <option value="4">★★★★</option>
+            <option value="5">★★★★★</option>
           </select>
         </label>
         <label>所要時間（分）<input id="duration" type="number" min="5" step="5" value="30" required></label>
         <label>作業の重さ
-          <select id="intensity"><option value="light">軽い</option><option value="normal" selected>普通</option><option value="focus">集中</option></select>
+          <select id="intensity">
+            <option value="light">軽い</option>
+            <option value="normal" selected>普通</option>
+            <option value="focus">集中</option>
+          </select>
         </label>
       </div>
 
       <label>いつやるか
         <select id="scheduleMode">
           <option value="fixed">日時固定</option>
-          <option value="date">日付指定</option>
+          <option value="date" selected>日付指定</option>
           <option value="range">期間指定</option>
           <option value="auto">締切まで候補</option>
         </select>
@@ -92,7 +181,7 @@
 
       <div class="advanced">
         <h3>時間割への配置</h3>
-        <p class="muted">日付指定・期間指定のタスクは「今日のタスク置き場」に表示され、そこから時間割へドラッグして配置します。</p>
+        <p class="muted">日付指定・期間指定・締切まで候補のタスクは、今日のタスク置き場から自分で時間割へ配置します。</p>
       </div>
 
       <div class="dialog-actions">
