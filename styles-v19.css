@@ -1,0 +1,1378 @@
+:root{
+  --bg:#f6f7fb;--panel:#fff;--text:#1f2937;--muted:#6b7280;--line:#e5e7eb;
+  --primary:#2563eb;--primary-soft:#eff6ff;--danger:#dc2626;--warn:#b45309;
+  --radius:16px;--shadow:0 8px 30px rgba(15,23,42,.06)
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans JP",sans-serif;background:var(--bg);color:var(--text)}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer;border:1px solid var(--line);background:#fff;border-radius:10px;padding:.65rem .9rem}
+button:hover{filter:brightness(.98)}
+.primary{background:var(--primary);color:#fff;border-color:var(--primary)}
+.ghost{background:#f9fafb}.danger{color:#fff;background:var(--danger);border-color:var(--danger)}
+.app-shell{max-width:1120px;margin:auto;padding:24px}
+.topbar{display:flex;justify-content:space-between;gap:16px;align-items:center}
+.topbar h1{margin:0;font-size:1.7rem}.topbar p{margin:.3rem 0 0;color:var(--muted)}
+.top-actions,.row{display:flex;gap:10px;align-items:center}.wrap{flex-wrap:wrap}
+.tabs{display:flex;gap:8px;margin:20px 0;overflow:auto}.tab.active{background:#111827;color:#fff;border-color:#111827}
+.view{display:none}.view.active{display:block}
+.summary-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:14px}
+.stat-card,.panel{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow)}
+.stat-card{padding:16px}.stat-card span{display:block;color:var(--muted);font-size:.9rem}.stat-card strong{display:block;font-size:1.45rem;margin-top:4px}
+.panel{padding:18px;margin:14px 0}.section-head{display:flex;justify-content:space-between;gap:12px;align-items:center}
+.section-head h2,.panel h2{margin:0 0 12px}
+.focus-panel{border-left:5px solid var(--primary)}
+.banner{border-radius:12px;padding:12px 14px;background:#fff7ed;border:1px solid #fed7aa;color:#9a3412;margin-bottom:14px}
+.hidden{display:none!important}
+.timeline{display:flex;flex-direction:column;gap:8px}
+.timeline-item{display:grid;grid-template-columns:110px 1fr auto;gap:12px;align-items:center;padding:12px;border:1px solid var(--line);border-radius:12px}
+.timeline-item.fixed{border-left:5px solid #7c3aed}.timeline-item.must{border-left:5px solid #dc2626}.timeline-item.recommended{border-left:5px solid #ea580c}
+.time{font-variant-numeric:tabular-nums;font-weight:700}.meta,.muted{color:var(--muted);font-size:.9rem}
+.task-list{display:flex;flex-direction:column;gap:10px}
+.task-card{border:1px solid var(--line);border-radius:12px;padding:14px;display:grid;grid-template-columns:1fr auto;gap:12px;background:#fff}
+.task-card.done{opacity:.6}.task-card h3{margin:0 0 6px;font-size:1rem}.task-tags{display:flex;gap:6px;flex-wrap:wrap}
+.tag{background:#f3f4f6;border-radius:999px;padding:3px 8px;font-size:.78rem}
+.tag.red{background:#fef2f2;color:#b91c1c}.tag.orange{background:#fff7ed;color:#c2410c}.tag.blue{background:#eff6ff;color:#1d4ed8}
+.card-actions{display:flex;gap:6px;align-items:flex-start;flex-wrap:wrap;justify-content:flex-end}
+.card-actions button{padding:.45rem .65rem;font-size:.86rem}
+.settings-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.settings-grid h2{grid-column:1/-1}
+label{display:flex;flex-direction:column;gap:6px;color:#374151;font-size:.92rem}
+input,select,textarea{width:100%;border:1px solid #d1d5db;border-radius:10px;padding:.7rem;background:#fff;color:var(--text)}
+.check{flex-direction:row;align-items:center}.check input{width:auto}
+.file-btn{display:inline-flex;width:auto;padding:.65rem .9rem;border:1px solid var(--line);border-radius:10px;background:#fff;cursor:pointer}.file-btn input{display:none}
+dialog{width:min(720px,calc(100% - 24px));border:0;border-radius:18px;padding:0;box-shadow:0 25px 80px rgba(0,0,0,.25)}
+dialog::backdrop{background:rgba(15,23,42,.5)}
+#taskForm{padding:20px;display:flex;flex-direction:column;gap:14px}.dialog-head,.dialog-actions{display:flex;align-items:center;gap:10px}.dialog-head{justify-content:space-between}
+.dialog-head h2{margin:0}.icon-btn{border:0;font-size:1.5rem;padding:.2rem .5rem}.spacer{flex:1}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.advanced{border-top:1px solid var(--line);padding-top:12px}.advanced h3{margin:0 0 10px}
+.weekday-picker{display:flex;gap:6px;flex-wrap:wrap}.weekday-picker label{flex-direction:row;padding:6px 10px;border:1px solid var(--line);border-radius:999px}
+.prose{line-height:1.75}.prose h3{margin-top:1.4rem;margin-bottom:.4rem}
+.next-box{display:flex;justify-content:space-between;gap:14px;align-items:center}.next-box strong{font-size:1.12rem}
+.empty{padding:24px;text-align:center;color:var(--muted)}
+@media(max-width:760px){
+  .app-shell{padding:14px}.topbar{align-items:flex-start;flex-direction:column}.top-actions{width:100%}.top-actions button{flex:1}
+  .summary-grid{grid-template-columns:1fr 1fr}.settings-grid,.form-grid{grid-template-columns:1fr}.settings-grid h2{grid-column:auto}
+  .timeline-item{grid-template-columns:86px 1fr}.timeline-item .card-actions{grid-column:1/-1}
+  .task-card{grid-template-columns:1fr}.card-actions{justify-content:flex-start}
+}
+
+
+/* --- Planner / sticky-note schedule --- */
+.planner-help{
+  margin-bottom:12px;padding:10px 12px;border-radius:10px;background:#f8fafc;
+  color:var(--muted);font-size:.9rem;border:1px solid var(--line)
+}
+.planner-wrap{display:grid;grid-template-columns:64px 1fr;gap:10px;align-items:start}
+.planner-labels{position:relative}
+.planner-time{
+  position:absolute;left:0;right:0;transform:translateY(-.6em);
+  color:#9ca3af;font-size:.75rem;text-align:right;padding-right:4px
+}
+.planner-time.major{color:#4b5563;font-weight:700}
+.planner-canvas{
+  position:relative;border:1px solid var(--line);border-radius:14px;
+  background:
+    repeating-linear-gradient(
+      to bottom,
+      #ffffff 0,
+      #ffffff 47px,
+      #eef2f7 47px,
+      #eef2f7 48px
+    );
+  overflow:hidden;min-width:0
+}
+.planner-task,.planner-break{
+  position:absolute;left:8px;right:8px;border-radius:12px
+}
+.planner-task{
+  display:grid;grid-template-columns:36px minmax(0,1fr) auto;gap:8px;align-items:center;
+  padding:7px 8px;background:#fff;border:1px solid #dbe2ea;
+  box-shadow:0 3px 10px rgba(15,23,42,.08);z-index:2
+}
+.planner-task.must{border-left:5px solid #dc2626}
+.planner-task.recommended{border-left:5px solid #ea580c}
+.planner-task.optional{border-left:5px solid #2563eb}
+.planner-task.fixed{border-left:5px solid #7c3aed;background:#faf5ff}
+.planner-task.manual{border-left:5px solid #059669;background:#ecfdf5}
+.planner-task.dragging{z-index:20;opacity:.92;box-shadow:0 14px 30px rgba(15,23,42,.22)}
+.drag-handle{
+  border:0;background:transparent;padding:8px 4px;cursor:grab;font-size:1.05rem;
+  touch-action:none;user-select:none;color:#6b7280
+}
+.drag-handle:active{cursor:grabbing}
+.planner-task-body{min-width:0}
+.planner-task-body b{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.planner-task-actions{display:flex;gap:4px;flex-wrap:wrap;justify-content:flex-end}
+.planner-task-actions button{padding:.32rem .48rem;font-size:.76rem}
+.planner-break{
+  background:rgba(148,163,184,.12);border:1px dashed #cbd5e1;
+  display:flex;align-items:center;padding:0 10px;color:#64748b;font-size:.8rem;z-index:1
+}
+
+@media(max-width:760px){
+  .planner-wrap{grid-template-columns:48px 1fr;gap:6px}
+  .planner-task{grid-template-columns:30px minmax(0,1fr);padding:6px}
+  .planner-task-actions{grid-column:2;justify-content:flex-start}
+  .planner-task-actions button{padding:.28rem .42rem}
+  .planner-task,.planner-break{left:5px;right:5px}
+}
+
+
+/* Compact planner cards for 15/30 minute tasks */
+.planner-task{overflow:hidden}
+.planner-task.compact{
+  grid-template-columns:30px minmax(0,1fr) auto;
+  gap:6px;
+  padding:4px 6px;
+}
+.planner-task.compact .drag-handle{
+  padding:4px 2px;
+  min-height:28px;
+}
+.planner-task.compact .planner-task-body{
+  display:flex;
+  align-items:center;
+  min-height:28px;
+}
+.planner-task.compact .planner-task-body b{
+  font-size:.9rem;
+  line-height:1.1;
+}
+.planner-task.compact .planner-task-body .meta{
+  display:none;
+}
+.planner-task.compact .planner-task-actions{
+  flex-wrap:nowrap;
+  gap:3px;
+  align-items:center;
+}
+.planner-task.compact .planner-task-actions button{
+  padding:.22rem .38rem;
+  font-size:.7rem;
+  line-height:1;
+  min-height:28px;
+}
+
+
+/* Exact time-proportional planner blocks */
+.planner-task,
+.planner-break{
+  border-radius:10px;
+}
+.planner-task{
+  min-height:0;
+}
+.planner-task.compact{
+  min-height:0;
+}
+
+
+/* Manual sticky-note task tray */
+.task-tray-section{
+  margin-bottom:14px;
+  padding:12px;
+  border:1px solid var(--line);
+  border-radius:12px;
+  background:#fafafa;
+}
+.tray-head{
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  align-items:center;
+  margin-bottom:10px;
+}
+.tray-head span{color:var(--muted);font-size:.82rem}
+.task-tray{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  align-items:stretch;
+}
+.task-sticky{
+  width:150px;
+  min-height:58px;
+  max-height:58px;
+  padding:7px 8px;
+  border:1px solid #d8dee8;
+  border-left:4px solid #f59e0b;
+  border-radius:9px;
+  background:#fffdf3;
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  grid-template-rows:auto auto;
+  gap:2px 6px;
+  align-items:center;
+  cursor:grab;
+  user-select:none;
+  touch-action:none;
+  overflow:hidden;
+}
+.task-sticky:active{cursor:grabbing}
+.sticky-title{
+  grid-column:1/2;
+  font-weight:700;
+  font-size:.84rem;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+.sticky-meta{
+  grid-column:1/2;
+  color:var(--muted);
+  font-size:.72rem;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+.task-sticky button{
+  grid-column:2/3;
+  grid-row:1/3;
+  padding:.28rem .42rem;
+  font-size:.72rem;
+}
+.tray-empty{color:var(--muted);font-size:.86rem;padding:4px 0}
+.sticky-ghost{
+  position:fixed;
+  z-index:9999;
+  pointer-events:none;
+  padding:7px 10px;
+  border-radius:8px;
+  border:1px solid #d8dee8;
+  background:#fffdf3;
+  box-shadow:0 8px 24px rgba(15,23,42,.18);
+  font-size:.82rem;
+  max-width:220px;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+@media(max-width:760px){
+  .tray-head{align-items:flex-start;flex-direction:column}
+  .task-sticky{width:calc(50% - 4px);min-width:130px}
+}
+
+
+/* Split planner + free memo board */
+.schedule-workspace{
+  display:grid;
+  grid-template-columns:minmax(0,1.35fr) minmax(320px,.65fr);
+  gap:14px;
+  align-items:stretch;
+}
+.schedule-column{min-width:0}
+.memo-column{
+  min-width:0;
+  display:flex;
+  flex-direction:column;
+  border-left:1px solid var(--line);
+  padding-left:14px;
+}
+.memo-toolbar{
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  align-items:flex-start;
+  margin-bottom:10px;
+}
+.memo-toolbar h3{margin:0 0 3px;font-size:1rem}
+.memo-toolbar p{margin:0;color:var(--muted);font-size:.78rem;line-height:1.4}
+.memo-toolbar button{white-space:nowrap}
+.memo-board{
+  position:relative;
+  flex:1;
+  min-height:720px;
+  border:1px solid #e5e7eb;
+  border-radius:12px;
+  background:#fff;
+  overflow:hidden;
+}
+
+/* Free memo sticky notes */
+.memo-note{
+  position:absolute;
+  min-width:130px;
+  min-height:90px;
+  max-width:100%;
+  resize:both;
+  overflow:auto;
+  border-radius:10px;
+  border:1px solid rgba(15,23,42,.14);
+  box-shadow:0 4px 14px rgba(15,23,42,.12);
+  display:flex;
+  flex-direction:column;
+  z-index:2;
+}
+.memo-note.moving{z-index:20;box-shadow:0 12px 30px rgba(15,23,42,.22)}
+.memo-note-bar{
+  display:flex;
+  align-items:center;
+  gap:5px;
+  min-height:32px;
+  padding:4px 5px 4px 8px;
+  border-bottom:1px solid rgba(15,23,42,.1);
+  cursor:grab;
+  user-select:none;
+  touch-action:none;
+  background:rgba(255,255,255,.25);
+}
+.memo-note-bar:active{cursor:grabbing}
+.memo-grip{font-weight:700;opacity:.55}
+.memo-note-label{font-size:.7rem;font-weight:700;opacity:.65;flex:1}
+.memo-mini-btn{
+  padding:.2rem .38rem;
+  font-size:.68rem;
+  border-radius:7px;
+  background:rgba(255,255,255,.65);
+}
+.memo-note-text{
+  padding:9px 10px 14px;
+  font-size:.88rem;
+  line-height:1.55;
+  white-space:normal;
+  overflow-wrap:anywhere;
+  flex:1;
+}
+.memo-red{background:#ffd9d9}
+.memo-yellow{background:#fff3b0}
+.memo-green{background:#dff4df}
+.memo-blue{background:#dcecff}
+
+/* memo editor color selector */
+.memo-color-fieldset{
+  border:1px solid var(--line);
+  border-radius:12px;
+  padding:12px;
+  margin:0;
+}
+.memo-color-fieldset legend{padding:0 6px;color:#374151;font-size:.92rem}
+.memo-color-options{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:8px;
+}
+.memo-color-option{
+  min-height:44px;
+  border:1px solid rgba(15,23,42,.12);
+  border-radius:10px;
+  padding:8px;
+  display:flex;
+  flex-direction:row;
+  align-items:center;
+  justify-content:center;
+  gap:6px;
+  cursor:pointer;
+}
+.memo-color-option input{width:auto}
+.memo-color-option.red{background:#ffd9d9}
+.memo-color-option.yellow{background:#fff3b0}
+.memo-color-option.green{background:#dff4df}
+.memo-color-option.blue{background:#dcecff}
+
+@media(max-width:900px){
+  .schedule-workspace{grid-template-columns:1fr}
+  .memo-column{
+    border-left:0;
+    border-top:1px solid var(--line);
+    padding-left:0;
+    padding-top:14px;
+  }
+  .memo-board{min-height:520px}
+}
+@media(max-width:520px){
+  .memo-toolbar{flex-direction:column}
+  .memo-toolbar button{width:100%}
+  .memo-color-options{grid-template-columns:1fr 1fr}
+}
+
+
+/* =========================================================
+   Refined paper-planner visual system
+   ========================================================= */
+:root{
+  --bg:#f5f4f1;
+  --panel:#fffefa;
+  --text:#22262b;
+  --muted:#777b80;
+  --line:#deded8;
+  --paper:#fffefa;
+  --paper-2:#fbfaf6;
+  --blue:#7fb8df;
+  --green:#9bc9a4;
+  --red:#e8a0a0;
+  --yellow:#e4c76a;
+  --shadow:0 4px 18px rgba(33,37,41,.055);
+}
+
+body{
+  background:
+    linear-gradient(rgba(255,255,255,.56),rgba(255,255,255,.56)),
+    #f3f2ef;
+  color:var(--text);
+}
+
+.app-shell{
+  max-width:1480px;
+  margin:auto;
+  padding:26px 30px 36px;
+}
+
+.topbar{
+  display:grid;
+  grid-template-columns:1fr auto 1fr;
+  align-items:center;
+  gap:20px;
+  padding:3px 4px 10px;
+}
+.brand-block h1{
+  margin:0;
+  font-family:Georgia,"Times New Roman","Noto Serif JP",serif;
+  font-size:2rem;
+  font-weight:500;
+  letter-spacing:.01em;
+}
+.date-nav{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:16px;
+  font-family:"Noto Serif JP",Georgia,serif;
+}
+.date-nav p{
+  margin:0;
+  color:#30343a;
+  font-size:1.02rem;
+}
+.date-chevron{
+  color:#686d72;
+  font-size:1.4rem;
+  user-select:none;
+}
+.top-actions{justify-content:flex-end}
+.top-actions .primary{
+  background:#fefefe;
+  color:#31363b;
+  border:1px solid #d9d9d4;
+  box-shadow:none;
+}
+.top-actions .primary:hover{background:#f6f6f2}
+
+.tabs{
+  justify-content:flex-end;
+  margin:0 0 18px;
+  gap:4px;
+  border-bottom:1px solid #e5e4df;
+}
+.tab{
+  border:0;
+  border-radius:0;
+  background:transparent;
+  padding:.75rem 1rem .7rem;
+  color:#53575b;
+}
+.tab.active{
+  background:transparent;
+  color:#17191c;
+  border-bottom:2px solid #33383d;
+}
+
+.today-layout{
+  display:grid;
+  grid-template-columns:minmax(0,1.55fr) minmax(300px,.85fr);
+  gap:16px;
+  align-items:stretch;
+}
+
+.planner-page,
+.memo-page{
+  background:rgba(255,254,250,.94);
+  border:1px solid #e4e3de;
+  border-radius:5px;
+  box-shadow:var(--shadow);
+}
+
+.planner-page{
+  padding:16px 18px 20px;
+  min-width:0;
+}
+
+.memo-page{
+  padding:16px 16px 18px;
+  min-width:0;
+  display:flex;
+  flex-direction:column;
+}
+
+.summary-grid{
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:10px;
+  margin-bottom:15px;
+}
+.stat-card{
+  border-radius:6px;
+  border:1px solid #ecebe6;
+  box-shadow:none;
+  padding:14px 14px 11px;
+  min-height:100px;
+  background:#fafafa;
+  position:relative;
+}
+.stat-card span{
+  font-size:.79rem;
+  color:#4f5458;
+  font-weight:600;
+}
+.stat-card strong{
+  font-family:Georgia,"Times New Roman","Noto Serif JP",serif;
+  font-size:1.55rem;
+  font-weight:500;
+  margin-top:9px;
+}
+.stat-card i{
+  display:block;
+  width:38%;
+  height:3px;
+  border-radius:3px;
+  margin-top:8px;
+  opacity:.9;
+}
+.stat-blue{background:#f0f7fb}.stat-blue i{background:var(--blue)}
+.stat-green{background:#f1f8f2}.stat-green i{background:var(--green)}
+.stat-red{background:#fcf2f2}.stat-red i{background:var(--red)}
+.stat-yellow{background:#fbf7e9}.stat-yellow i{background:var(--yellow)}
+
+.planner-overview{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:16px;
+  margin-bottom:8px;
+}
+.paper-section{
+  padding:12px 4px 8px;
+  border:0;
+  box-shadow:none;
+  background:transparent;
+}
+.compact-head{
+  border-bottom:1px solid #deded9;
+  padding-bottom:7px;
+  margin-bottom:2px;
+}
+.compact-head h2,
+.timeline-titlebar h2{
+  margin:0;
+  font-size:1rem;
+  font-weight:650;
+  letter-spacing:.01em;
+}
+.timeline-titlebar{
+  padding:5px 0 8px;
+  border-bottom:1px solid #deded9;
+}
+.quiet-button{
+  background:transparent;
+  border:1px solid #dcdcd7;
+  padding:.45rem .65rem;
+  font-size:.78rem;
+  color:#656a6e;
+  box-shadow:none;
+}
+
+/* next item */
+.focus-panel{border-left:0}
+.next-box{
+  min-height:92px;
+  padding:15px 8px 12px;
+  border-bottom:1px solid #ededE8;
+}
+.next-box strong{font-size:.96rem}
+.next-box .meta{margin-top:6px;font-size:.78rem}
+.next-box .primary{
+  background:#fff;
+  color:#33383d;
+  border:1px solid #d7d7d2;
+}
+
+/* compact TODO on top */
+.compact-task-list{gap:0}
+.compact-task-list .task-card{
+  border:0;
+  border-bottom:1px solid #ecebe7;
+  border-radius:0;
+  padding:8px 4px;
+  box-shadow:none;
+  background:transparent;
+  grid-template-columns:minmax(0,1fr) auto;
+  gap:8px;
+}
+.compact-task-list .task-card h3{
+  font-size:.86rem;
+  margin:0;
+  font-weight:500;
+}
+.compact-task-list .task-tags{display:none}
+.compact-task-list .card-actions{gap:3px}
+.compact-task-list .card-actions button{
+  padding:.25rem .38rem;
+  font-size:.68rem;
+  border-radius:6px;
+}
+
+/* task tray */
+.timeline-section{padding-top:7px}
+.task-tray-section{
+  margin:10px 0 16px;
+  padding:0;
+  border:0;
+  border-radius:0;
+  background:transparent;
+}
+.tray-head{
+  margin:0 0 7px;
+  align-items:center;
+}
+.tray-head b{
+  font-size:.92rem;
+  font-weight:650;
+}
+.tray-head span{font-size:.72rem;color:#92959a}
+.task-tray{gap:7px}
+.task-sticky{
+  width:122px;
+  min-height:52px;
+  max-height:52px;
+  border-radius:5px;
+  background:#fff;
+  border:1px solid #dbdbd6;
+  border-left-width:4px;
+  box-shadow:0 2px 6px rgba(40,43,46,.06);
+}
+.task-sticky:nth-child(4n+1){border-left-color:#e7a0a0}
+.task-sticky:nth-child(4n+2){border-left-color:#e2c768}
+.task-sticky:nth-child(4n+3){border-left-color:#86badb}
+.task-sticky:nth-child(4n+4){border-left-color:#9fc99f}
+.sticky-title{font-size:.78rem}
+.sticky-meta{font-size:.67rem}
+
+/* timeline */
+.planner-wrap{
+  grid-template-columns:50px 1fr;
+  gap:8px;
+}
+.planner-canvas{
+  border:0;
+  border-left:1px solid #d7d8d4;
+  border-radius:0;
+  background:
+    repeating-linear-gradient(
+      to bottom,
+      rgba(255,255,255,.01) 0,
+      rgba(255,255,255,.01) 47px,
+      #deded9 47px,
+      #deded9 48px
+    );
+}
+.planner-time{
+  color:#7d8286;
+  font-size:.7rem;
+}
+.planner-time.major{color:#53585c;font-weight:500}
+.planner-task{
+  left:10px;
+  right:auto;
+  width:min(74%,520px);
+  border-radius:4px;
+  border:1px solid #dadbd7;
+  border-left-width:4px;
+  background:#fff !important;
+  box-shadow:0 2px 5px rgba(35,38,41,.045);
+}
+.planner-task.manual{border-left-color:#7fb8df}
+.planner-task.fixed{border-left-color:#c19ccf;background:#fff !important}
+.planner-task-body b{font-size:.83rem;font-weight:650}
+.planner-task .meta{font-size:.7rem}
+.drag-handle{font-size:.9rem;color:#9b9da0}
+.planner-task-actions button{
+  background:#fff;
+  border-color:#e2e2de;
+  box-shadow:none;
+}
+
+/* memo board */
+.memo-toolbar{
+  align-items:center;
+  border-bottom:1px solid #e1e0dc;
+  padding:0 2px 10px;
+  margin-bottom:10px;
+}
+.memo-toolbar h2{
+  margin:0;
+  font-family:"Noto Serif JP",Georgia,serif;
+  font-size:1.12rem;
+  font-weight:600;
+}
+.memo-toolbar p{
+  margin:3px 0 0;
+  font-size:.7rem;
+  color:#999c9f;
+}
+.memo-add-button{
+  white-space:nowrap;
+  background:#fff;
+  color:#32373b;
+  border:1px solid #d8d8d3;
+  padding:.55rem .72rem;
+  border-radius:6px;
+  box-shadow:none;
+}
+.memo-board{
+  position:relative;
+  flex:1;
+  min-height:920px;
+  border:0;
+  border-radius:0;
+  background-color:#fffefa;
+  background-image:radial-gradient(#d9d9d3 .7px,transparent .7px);
+  background-size:14px 14px;
+  overflow:hidden;
+}
+
+/* memo notes: straight, horizontal and paper-like */
+.memo-note{
+  min-width:210px;
+  min-height:90px;
+  border-radius:2px;
+  border:1px solid rgba(40,43,46,.08);
+  box-shadow:0 7px 16px rgba(42,45,48,.11);
+  transform:none !important;
+  resize:both;
+}
+.memo-note-bar{
+  min-height:25px;
+  border-bottom:0;
+  background:rgba(255,255,255,.13);
+  padding:2px 5px 1px 8px;
+}
+.memo-grip{opacity:.38}
+.memo-note-label{font-size:.6rem;opacity:.45}
+.memo-mini-btn{
+  opacity:.62;
+  background:rgba(255,255,255,.58);
+  border:0;
+  padding:.16rem .3rem;
+}
+.memo-note-text{
+  padding:8px 12px 12px;
+  font-family:"Noto Serif JP","Yu Mincho","Hiragino Mincho ProN",serif;
+  font-size:.85rem;
+  line-height:1.6;
+}
+.memo-red{background:#f7cccc}
+.memo-yellow{background:#f7e995}
+.memo-green{background:#d8edc4}
+.memo-blue{background:#cce8f7}
+
+.memo-color-option.red{background:#f7cccc}
+.memo-color-option.yellow{background:#f7e995}
+.memo-color-option.green{background:#d8edc4}
+.memo-color-option.blue{background:#cce8f7}
+
+
+
+
+
+/* =========================================================
+   Fixed-composition viewport scaling
+   Keep the desktop two-column layout at all window widths.
+   ========================================================= */
+html,body{
+  width:100%;
+  min-width:0;
+}
+body{
+  overflow-x:hidden;
+}
+.app-shell{
+  width:1440px;
+  max-width:none;
+  margin:0;
+  position:absolute;
+  left:50%;
+  top:0;
+  transform:translateX(-50%) scale(var(--app-scale,1));
+  transform-origin:top center;
+}
+.today-layout{
+  grid-template-columns:minmax(0,1.55fr) minmax(300px,.85fr) !important;
+}
+.planner-overview{
+  grid-template-columns:1fr 1fr !important;
+}
+.summary-grid{
+  grid-template-columns:repeat(4,minmax(0,1fr)) !important;
+}
+
+
+/* Resize memo notes from any edge or corner */
+.memo-note{
+  resize:none !important;
+}
+.memo-note.resizing{
+  z-index:30;
+  box-shadow:0 12px 28px rgba(42,45,48,.18);
+}
+.memo-resize-handle{
+  position:absolute;
+  z-index:12;
+  display:block;
+  background:transparent;
+  touch-action:none;
+  user-select:none;
+}
+.resize-n,.resize-s{
+  left:14px;
+  right:14px;
+  height:14px;
+  cursor:ns-resize;
+}
+.resize-n{top:-7px}
+.resize-s{bottom:-7px}
+.resize-e,.resize-w{
+  top:14px;
+  bottom:14px;
+  width:14px;
+  cursor:ew-resize;
+}
+.resize-e{right:-7px}
+.resize-w{left:-7px}
+.resize-ne,.resize-nw,.resize-se,.resize-sw{
+  width:16px;
+  height:16px;
+}
+.resize-ne{right:-5px;top:-5px;cursor:nesw-resize}
+.resize-nw{left:-5px;top:-5px;cursor:nwse-resize}
+.resize-se{right:-5px;bottom:-5px;cursor:nwse-resize}
+.resize-sw{left:-5px;bottom:-5px;cursor:nesw-resize}
+
+/* Resize handles are intentionally invisible: only pointer cursor changes at note edges */
+.memo-resize-handle,
+.memo-resize-handle::before,
+.memo-resize-handle::after{
+  background:transparent !important;
+  border:0 !important;
+  box-shadow:none !important;
+  outline:0 !important;
+  opacity:0 !important;
+}
+
+/* Prevent native scrollbars from appearing inside sticky notes */
+.memo-note{
+  overflow:hidden !important;
+  scrollbar-width:none;
+}
+.memo-note::-webkit-scrollbar{
+  display:none;
+  width:0;
+  height:0;
+}
+.memo-note-text{
+  overflow:hidden !important;
+}
+
+
+/* Direct delete control on each sticky note */
+.memo-note-actions{
+  margin-left:auto;
+  display:flex;
+  align-items:center;
+  gap:2px;
+}
+.memo-delete-x{
+  border:0;
+  background:transparent;
+  color:rgba(35,39,43,.58);
+  font-size:1rem;
+  line-height:1;
+  width:24px;
+  height:24px;
+  padding:0;
+  border-radius:50%;
+  cursor:pointer;
+}
+.memo-delete-x:hover{
+  background:rgba(255,255,255,.5);
+  color:#2a2e31;
+}
+
+
+/* Slightly deeper sticky-note headers while preserving the soft planner feel */
+.memo-red .memo-note-bar{
+  background:#e7b8b8;
+}
+.memo-yellow .memo-note-bar{
+  background:#e7d77f;
+}
+.memo-green .memo-note-bar{
+  background:#bfd7a8;
+}
+.memo-blue .memo-note-bar{
+  background:#b5d4e5;
+}
+
+.memo-note-bar{
+  color:#30363a;
+}
+.memo-note-bar .memo-note-label,
+.memo-note-bar .memo-grip{
+  color:rgba(48,54,58,.72);
+}
+.memo-note-bar .memo-mini-btn,
+.memo-note-bar .memo-delete-x{
+  color:rgba(48,54,58,.78);
+}
+.memo-note-bar .memo-mini-btn:hover,
+.memo-note-bar .memo-delete-x:hover{
+  background:rgba(255,255,255,.34);
+  color:#252a2e;
+}
+
+
+/* =========================================================
+   Memo editor dialog — refined paper/planner styling
+   ========================================================= */
+#memoDialog{
+  width:min(640px,calc(100vw - 28px));
+  border:1px solid #deddd7;
+  border-radius:12px;
+  padding:0;
+  background:#fffefa;
+  color:#25292d;
+  box-shadow:0 24px 60px rgba(35,39,43,.18);
+}
+#memoDialog::backdrop{
+  background:rgba(46,50,54,.28);
+  backdrop-filter:blur(2px);
+}
+#memoForm{
+  padding:22px 22px 18px;
+  background:
+    linear-gradient(rgba(255,255,255,.82),rgba(255,255,255,.82)),
+    #fbfaf6;
+}
+#memoDialog .dialog-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:16px;
+  padding-bottom:11px;
+  border-bottom:1px solid #e5e3dc;
+}
+#memoDialog .dialog-head h2{
+  margin:0;
+  font-family:"Noto Serif JP",Georgia,serif;
+  font-size:1.22rem;
+  font-weight:600;
+  letter-spacing:.01em;
+}
+#memoDialog .icon-btn{
+  width:32px;
+  height:32px;
+  padding:0;
+  border:0;
+  border-radius:50%;
+  background:transparent;
+  color:#62676b;
+  font-size:1.25rem;
+  line-height:1;
+  box-shadow:none;
+}
+#memoDialog .icon-btn:hover{
+  background:#f0efea;
+  color:#252a2e;
+}
+#memoDialog label{
+  color:#4b5054;
+  font-size:.82rem;
+  font-weight:500;
+}
+#memoText{
+  width:100%;
+  box-sizing:border-box;
+  margin-top:7px;
+  min-height:150px;
+  padding:14px 15px;
+  resize:vertical;
+  border:1px solid #d9d8d2;
+  border-radius:8px;
+  color:#2f3337;
+  font:inherit;
+  line-height:1.75;
+  background-color:#fffefb;
+  background-image:
+    repeating-linear-gradient(
+      to bottom,
+      transparent 0,
+      transparent 31px,
+      #eceae3 31px,
+      #eceae3 32px
+    );
+  box-shadow:inset 0 1px 2px rgba(30,34,38,.03);
+}
+#memoText:focus{
+  outline:none;
+  border-color:#bfc5c8;
+  box-shadow:0 0 0 3px rgba(127,184,223,.12);
+}
+.memo-color-fieldset{
+  margin:17px 0 0;
+  padding:0;
+  border:0;
+}
+.memo-color-fieldset legend{
+  margin-bottom:8px;
+  padding:0;
+  color:#4b5054;
+  font-size:.82rem;
+  font-weight:500;
+}
+.memo-color-options{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:9px;
+}
+.memo-color-option{
+  position:relative;
+  display:flex !important;
+  align-items:center;
+  justify-content:center;
+  min-height:60px;
+  border:1px solid rgba(44,48,52,.09);
+  border-radius:7px;
+  cursor:pointer;
+  box-shadow:0 2px 5px rgba(42,45,48,.05);
+  transition:transform .12s ease,box-shadow .12s ease,border-color .12s ease;
+}
+.memo-color-option:hover{
+  transform:translateY(-1px);
+  box-shadow:0 4px 10px rgba(42,45,48,.08);
+}
+.memo-color-option input{
+  position:absolute;
+  opacity:0;
+  pointer-events:none;
+}
+.memo-color-option span{
+  font-size:.78rem;
+  color:#34393d;
+}
+.memo-color-option input:checked + span::before{
+  content:"✓";
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:19px;
+  height:19px;
+  margin-right:6px;
+  border-radius:50%;
+  background:rgba(255,255,255,.72);
+  color:#2f3539;
+  font-size:.72rem;
+  font-weight:700;
+  vertical-align:-1px;
+}
+.memo-color-option:has(input:checked){
+  border-color:rgba(47,53,57,.28);
+  box-shadow:0 0 0 2px rgba(255,255,255,.78) inset,0 4px 10px rgba(42,45,48,.08);
+}
+#memoDialog .dialog-actions{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  margin-top:20px;
+  padding-top:14px;
+  border-top:1px solid #e6e4de;
+}
+#memoDialog .dialog-actions button{
+  min-width:92px;
+  border-radius:7px;
+  padding:.62rem .9rem;
+  box-shadow:none;
+}
+#memoDialog .dialog-actions .primary{
+  background:#4e78a6;
+  border-color:#4e78a6;
+  color:#fff;
+}
+#memoDialog .dialog-actions .primary:hover{
+  background:#426b97;
+}
+#memoDialog .dialog-actions #cancelMemoBtn{
+  background:#fff;
+  color:#404549;
+  border:1px solid #d8d7d1;
+}
+#memoDialog .dialog-actions .danger{
+  background:transparent;
+  color:#b65b5b;
+  border:1px solid #dfbdbd;
+}
+#memoDialog .dialog-actions .danger:hover{
+  background:#fbefef;
+}
+@media(max-width:620px){
+  .memo-color-options{grid-template-columns:1fr 1fr}
+}
+
+
+/* Match the memo editor's ruled-paper feel on actual sticky notes */
+.memo-note{
+  background-image:
+    repeating-linear-gradient(
+      to bottom,
+      rgba(255,255,255,0) 0,
+      rgba(255,255,255,0) 31px,
+      rgba(80,84,88,.09) 31px,
+      rgba(80,84,88,.09) 32px
+    ) !important;
+  background-blend-mode:multiply;
+}
+.memo-red{
+  background-color:#f7cccc !important;
+}
+.memo-yellow{
+  background-color:#f7e995 !important;
+}
+.memo-green{
+  background-color:#d8edc4 !important;
+}
+.memo-blue{
+  background-color:#cce8f7 !important;
+}
+
+
+/* Make ruled lines clearly visible in the writable area of sticky notes.
+   Draw on the text layer so the lines align with the memo content. */
+.memo-note{
+  background-image:none !important;
+  background-blend-mode:normal !important;
+}
+.memo-note-text{
+  min-height:calc(100% - 25px);
+  box-sizing:border-box;
+  background-image:
+    repeating-linear-gradient(
+      to bottom,
+      transparent 0,
+      transparent 26px,
+      rgba(65,70,74,.16) 26px,
+      rgba(65,70,74,.16) 27px
+    );
+  background-position:0 7px;
+  background-size:100% 27px;
+}
+
+/* Remove ruled-paper lines from memo editor and sticky notes */
+#memoText{
+  background-image:none !important;
+  background-color:#fffefb !important;
+}
+.memo-note{
+  background-image:none !important;
+  background-blend-mode:normal !important;
+}
+.memo-note-text{
+  background-image:none !important;
+  background:none !important;
+}
+
+
+/* =========================================================
+   Simplified task editor
+   ========================================================= */
+#taskDialog{
+  width:min(680px,calc(100vw - 28px));
+  border:1px solid #deddd7;
+  border-radius:12px;
+  padding:0;
+  background:#fffefa;
+  color:#25292d;
+  box-shadow:0 24px 60px rgba(35,39,43,.18);
+}
+#taskDialog::backdrop{
+  background:rgba(46,50,54,.28);
+  backdrop-filter:blur(2px);
+}
+#taskForm{
+  padding:22px 22px 18px;
+  background:#fbfaf6;
+}
+#taskDialog .dialog-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding-bottom:11px;
+  margin-bottom:16px;
+  border-bottom:1px solid #e5e3dc;
+}
+#taskDialog .dialog-head h2{
+  margin:0;
+  font-family:"Noto Serif JP",Georgia,serif;
+  font-size:1.22rem;
+  font-weight:600;
+}
+#taskDialog .icon-btn{
+  width:32px;
+  height:32px;
+  padding:0;
+  border:0;
+  border-radius:50%;
+  background:transparent;
+  color:#62676b;
+  font-size:1.25rem;
+  box-shadow:none;
+}
+#taskDialog .icon-btn:hover{background:#f0efea;color:#252a2e}
+
+.task-basic-fields{
+  display:grid;
+  gap:13px;
+}
+.task-basic-fields > label,
+.task-details-body label{
+  color:#4b5054;
+  font-size:.82rem;
+  font-weight:500;
+}
+.task-basic-fields input,
+.task-basic-fields textarea,
+.task-basic-fields select,
+.task-details-body input,
+.task-details-body select{
+  margin-top:6px;
+  width:100%;
+  box-sizing:border-box;
+  border:1px solid #d9d8d2;
+  border-radius:8px;
+  background:#fff;
+  color:#2f3337;
+  padding:.67rem .75rem;
+  box-shadow:none;
+}
+.task-basic-fields textarea{
+  resize:vertical;
+  min-height:82px;
+  line-height:1.6;
+}
+.task-basic-fields input:focus,
+.task-basic-fields textarea:focus,
+.task-basic-fields select:focus,
+.task-details-body input:focus,
+.task-details-body select:focus{
+  outline:none;
+  border-color:#bfc5c8;
+  box-shadow:0 0 0 3px rgba(127,184,223,.12);
+}
+.duration-input-wrap{
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+.duration-input-wrap input{
+  max-width:150px;
+}
+.duration-input-wrap span{
+  margin-top:6px;
+  color:#777b80;
+  font-size:.82rem;
+}
+
+.task-details{
+  margin-top:16px;
+  border:1px solid #dfded8;
+  border-radius:9px;
+  background:#fffefa;
+  overflow:hidden;
+}
+.task-details summary{
+  list-style:none;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:12px 14px;
+  color:#3f4448;
+  user-select:none;
+}
+.task-details summary::-webkit-details-marker{display:none}
+.task-details summary::after{
+  content:"＋";
+  margin-left:auto;
+  color:#7a7f83;
+  font-size:1rem;
+}
+.task-details[open] summary::after{content:"−"}
+.task-details summary span{
+  font-weight:600;
+  font-size:.87rem;
+}
+.task-details summary small{
+  color:#999c9f;
+  font-size:.72rem;
+  font-weight:400;
+}
+.task-details[open] summary{
+  border-bottom:1px solid #e7e6e1;
+}
+.task-details-body{
+  padding:14px;
+  background:#fdfcf8;
+}
+.task-details-body .form-grid{
+  margin:0;
+  gap:12px;
+}
+.task-placement-note{
+  margin-top:14px;
+  padding:12px 13px;
+  border-radius:7px;
+  background:#f6f5f0;
+}
+.task-placement-note h3{
+  margin:0 0 4px;
+  font-size:.8rem;
+}
+.task-placement-note p{
+  margin:0;
+  font-size:.72rem;
+  line-height:1.5;
+}
+
+#taskDialog .dialog-actions{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  margin-top:18px;
+  padding-top:14px;
+  border-top:1px solid #e6e4de;
+}
+#taskDialog .dialog-actions button{
+  min-width:92px;
+  border-radius:7px;
+  padding:.62rem .9rem;
+  box-shadow:none;
+}
+#taskDialog .dialog-actions .primary{
+  background:#4e78a6;
+  border-color:#4e78a6;
+  color:#fff;
+}
+#taskDialog .dialog-actions .danger{
+  background:transparent;
+  color:#b65b5b;
+  border:1px solid #dfbdbd;
+}
+#taskDialog .dialog-actions #cancelBtn{
+  background:#fff;
+  color:#404549;
+  border:1px solid #d8d7d1;
+}
