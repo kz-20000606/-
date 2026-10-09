@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#b39a82"/>
+      <stop offset="1" stop-color="#8f745b"/>
+    </linearGradient>
+    <linearGradient id="paper" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#fffdf9"/>
+      <stop offset="1" stop-color="#f7f1e9"/>
+    </linearGradient>
+    <filter id="shadow" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="8" dy="10" stdDeviation="7" flood-color="#5f4936" flood-opacity=".28"/>
+    </filter>
+  </defs>
+
+  <!-- Keep the whole composition identical; only enlarge it from the center -->
+  <g transform="translate(-25.6 -25.6) scale(1.10)">
+    <rect x="28" y="28" width="456" height="456" rx="92" fill="url(#bg)"/>
+
+    <g filter="url(#shadow)">
+      <rect x="145" y="106" width="258" height="310" rx="38" fill="#6f563f" opacity=".34"/>
+      <rect x="128" y="88" width="258" height="310" rx="38" fill="url(#paper)"/>
+    </g>
+
+    <circle cx="133" cy="143" r="17" fill="#6e543d"/>
+    <circle cx="133" cy="211" r="17" fill="#6e543d"/>
+    <circle cx="133" cy="279" r="17" fill="#6e543d"/>
+    <circle cx="133" cy="347" r="17" fill="#6e543d"/>
+
+    <g fill="#8e7056">
+      <rect x="82" y="129" width="66" height="28" rx="14"/>
+      <rect x="82" y="197" width="66" height="28" rx="14"/>
+      <rect x="82" y="265" width="66" height="28" rx="14"/>
+      <rect x="82" y="333" width="66" height="28" rx="14"/>
+    </g>
+
+    <g fill="#fffdf9" stroke="#8f745b" stroke-width="10">
+      <rect x="205" y="135" width="52" height="52" rx="8"/>
+      <rect x="205" y="220" width="52" height="52" rx="8"/>
+      <rect x="205" y="305" width="52" height="52" rx="8"/>
+    </g>
+
+    <g fill="none" stroke="#8f745b" stroke-width="12" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M218 160l12 12 22-28"/>
+      <path d="M218 245l12 12 22-28"/>
+      <path d="M218 330l12 12 22-28"/>
+    </g>
+
+    <g stroke="#b79f88" stroke-width="12" stroke-linecap="round">
+      <line x1="289" y1="161" x2="348" y2="161"/>
+      <line x1="289" y1="246" x2="348" y2="246"/>
+      <line x1="289" y1="331" x2="348" y2="331"/>
+    </g>
+  </g>
+</svg>
