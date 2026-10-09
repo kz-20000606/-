@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Smart Schedule</title>
-  <link rel="stylesheet" href="styles-v18.css">
+  <link rel="stylesheet" href="styles-v19.css">
 </head>
 <body>
   <div class="app-shell">
@@ -201,60 +201,83 @@
       </div>
 
       <input type="hidden" id="taskId">
-      <label>タスク名<input id="title" required maxlength="100"></label>
-      <label>メモ<textarea id="notes" rows="3"></textarea></label>
 
-      <div class="form-grid">
-        <label>カテゴリ<input id="category" placeholder="仕事・勉強・私用など"></label>
-        <label>重要度
-          <select id="importance">
-            <option value="1">★</option>
-            <option value="2">★★</option>
-            <option value="3" selected>★★★</option>
-            <option value="4">★★★★</option>
-            <option value="5">★★★★★</option>
+      <div class="task-basic-fields">
+        <label>タスク名
+          <input id="title" required maxlength="100" placeholder="例：暗算プリントを作る">
+        </label>
+
+        <label>メモ
+          <textarea id="notes" rows="3" placeholder="必要なら補足を書きます"></textarea>
+        </label>
+
+        <label>所要時間
+          <div class="duration-input-wrap">
+            <input id="duration" type="number" min="5" step="5" value="30" required>
+            <span>分</span>
+          </div>
+        </label>
+
+        <label>いつやるか
+          <select id="scheduleMode">
+            <option value="fixed">日時固定</option>
+            <option value="date" selected>日付指定</option>
+            <option value="range">期間指定</option>
+            <option value="auto">締切まで候補</option>
           </select>
         </label>
-        <label>所要時間（分）<input id="duration" type="number" min="5" step="5" value="30" required></label>
-        <label>作業の重さ
-          <select id="intensity">
-            <option value="light">軽い</option>
-            <option value="normal" selected>普通</option>
-            <option value="focus">集中</option>
-          </select>
-        </label>
-      </div>
 
-      <label>いつやるか
-        <select id="scheduleMode">
-          <option value="fixed">日時固定</option>
-          <option value="date" selected>日付指定</option>
-          <option value="range">期間指定</option>
-          <option value="auto">締切まで候補</option>
-        </select>
-      </label>
+        <div id="modeFields"></div>
 
-      <div id="modeFields"></div>
-
-      <div class="form-grid">
-        <label>締切<input id="deadline" type="datetime-local"></label>
-        <label>繰り返し
-          <select id="recurrence">
-            <option value="none">なし</option>
-            <option value="daily">毎日</option>
-            <option value="weekdays">平日のみ</option>
-            <option value="weekends">土日のみ</option>
-            <option value="weekly">毎週</option>
-          </select>
+        <label>締切
+          <input id="deadline" type="datetime-local">
         </label>
       </div>
 
-      <div id="weekdayPicker" class="weekday-picker hidden"></div>
+      <details class="task-details">
+        <summary>
+          <span>詳細設定</span>
+          <small>重要度・カテゴリ・繰り返しなど</small>
+        </summary>
 
-      <div class="advanced">
-        <h3>時間割への配置</h3>
-        <p class="muted">日付指定・期間指定・締切まで候補のタスクは、今日のタスク置き場から自分で時間割へ配置します。</p>
-      </div>
+        <div class="task-details-body">
+          <div class="form-grid">
+            <label>カテゴリ<input id="category" placeholder="仕事・勉強・私用など"></label>
+            <label>重要度
+              <select id="importance">
+                <option value="1">★</option>
+                <option value="2">★★</option>
+                <option value="3" selected>★★★</option>
+                <option value="4">★★★★</option>
+                <option value="5">★★★★★</option>
+              </select>
+            </label>
+            <label>作業の重さ
+              <select id="intensity">
+                <option value="light">軽い</option>
+                <option value="normal" selected>普通</option>
+                <option value="focus">集中</option>
+              </select>
+            </label>
+            <label>繰り返し
+              <select id="recurrence">
+                <option value="none">なし</option>
+                <option value="daily">毎日</option>
+                <option value="weekdays">平日のみ</option>
+                <option value="weekends">土日のみ</option>
+                <option value="weekly">毎週</option>
+              </select>
+            </label>
+          </div>
+
+          <div id="weekdayPicker" class="weekday-picker hidden"></div>
+
+          <div class="advanced task-placement-note">
+            <h3>時間割への配置</h3>
+            <p class="muted">日付指定・期間指定・締切まで候補のタスクは、今日のタスク置き場から自分で時間割へ配置します。</p>
+          </div>
+        </div>
+      </details>
 
       <div class="dialog-actions">
         <button type="button" id="deleteTaskBtn" class="danger hidden">削除</button>
