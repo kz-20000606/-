@@ -1,13 +1,13 @@
-const CACHE_NAME='smart-schedule-pwa-v1';
+const CACHE_NAME='smart-schedule-pwa-v2';
 const APP_SHELL=[
   './',
   './index.html',
   './styles-v19.css',
   './app-v16.js',
   './manifest.webmanifest',
-  './icon-192.svg',
-  './icon-512.svg',
-  './icon-maskable.svg'
+  './icon-192-v2.svg',
+  './icon-512-v2.svg',
+  './icon-maskable-v2.svg'
 ];
 
 self.addEventListener('install',event=>{
