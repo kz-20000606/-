@@ -4,6 +4,14 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Smart Schedule</title>
+  <meta name="theme-color" content="#f5f4f1">
+  <meta name="application-name" content="Smart Schedule">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Smart Schedule">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icon-192.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="icon-192.svg">
   <link rel="stylesheet" href="styles-v19.css">
 </head>
 <body>
@@ -109,6 +117,13 @@
             <input value="30分" disabled>
           </label>
           <button id="saveSettingsBtn" class="primary">設定を保存</button>
+        </section>
+
+        <section class="panel install-panel">
+          <h2>アプリとして使う</h2>
+          <p class="muted">Smart Scheduleをインストールすると、Chromeのタブとは別の専用ウィンドウで起動できます。</p>
+          <button id="installAppBtn" class="primary hidden" type="button">Smart Scheduleをインストール</button>
+          <p id="installAppStatus" class="muted install-status"></p>
         </section>
 
         <section class="panel">
@@ -288,6 +303,6 @@
     </form>
   </dialog>
 
-  <script src="app-v16.js"></script>
+  <script src="app-v17.js"></script>
 </body>
 </html>
