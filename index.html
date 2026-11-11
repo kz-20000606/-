@@ -12,7 +12,7 @@
   <link rel="manifest" href="manifest.webmanifest?v=3">
   <link rel="icon" href="icon-192-v3.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="icon-192-v3.svg">
-  <link rel="stylesheet" href="styles-v28.css">
+  <link rel="stylesheet" href="styles-v29.css">
 </head>
 <body>
   <div class="app-shell">
@@ -102,9 +102,10 @@
             <h2>タスク一覧</h2>
             <div class="filters">
               <select id="taskFilter">
-                <option value="open">未完了</option>
+                <option value="normal" selected>通常タスク</option>
+                <option value="recurring">定期タスク</option>
+                <option value="done">完了済み</option>
                 <option value="all">すべて</option>
-                <option value="done">完了</option>
               </select>
             </div>
           </div>
@@ -316,6 +317,6 @@
     </form>
   </dialog>
 
-  <script src="app-v30.js"></script>
+  <script src="app-v31.js"></script>
 </body>
 </html>
