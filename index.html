@@ -12,7 +12,7 @@
   <link rel="manifest" href="manifest.webmanifest?v=3">
   <link rel="icon" href="icon-192-v3.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="icon-192-v3.svg">
-  <link rel="stylesheet" href="styles-v29.css">
+  <link rel="stylesheet" href="styles-v30.css">
 </head>
 <body>
   <div class="app-shell">
@@ -100,13 +100,11 @@
         <section class="panel">
           <div class="section-head">
             <h2>タスク一覧</h2>
-            <div class="filters">
-              <select id="taskFilter">
-                <option value="normal" selected>通常タスク</option>
-                <option value="recurring">定期タスク</option>
-                <option value="done">完了済み</option>
-                <option value="all">すべて</option>
-              </select>
+            <div class="filters task-filter-tabs" id="taskFilterTabs" role="tablist" aria-label="タスク表示切替">
+              <button type="button" class="task-filter-tab active" data-task-filter="normal" role="tab" aria-selected="true">通常タスク</button>
+              <button type="button" class="task-filter-tab" data-task-filter="recurring" role="tab" aria-selected="false">定期タスク</button>
+              <button type="button" class="task-filter-tab" data-task-filter="done" role="tab" aria-selected="false">完了済み</button>
+              <button type="button" class="task-filter-tab" data-task-filter="all" role="tab" aria-selected="false">すべて</button>
             </div>
           </div>
           <div id="allTasks" class="task-list"></div>
@@ -317,6 +315,6 @@
     </form>
   </dialog>
 
-  <script src="app-v31.js"></script>
+  <script src="app-v32.js"></script>
 </body>
 </html>
