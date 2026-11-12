@@ -339,6 +339,19 @@
     </form>
   </dialog>
 
-  <script src="app-v42.js"></script>
+  <script>
+  (function(){
+    var boot=document.getElementById('storageBootStatus');
+    var s=document.createElement('script');
+    s.src='./app-v43.js?v=20261112-1';
+    s.onload=function(){
+      if(boot && !boot.textContent.includes('アプリ読込済み')) boot.textContent+=' / JS読込完了';
+    };
+    s.onerror=function(){
+      if(boot) boot.textContent+=' / JS読込失敗';
+    };
+    document.body.appendChild(s);
+  })();
+  </script>
 </body>
 </html>
