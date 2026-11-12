@@ -32,6 +32,7 @@ function esc(s){return String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','
 function inspect(){
   const rows=[];
   const all={};
+  const parsedByKey={};
   for(let i=0;i<localStorage.length;i++){
     const key=localStorage.key(i);
     const raw=localStorage.getItem(key);
@@ -39,6 +40,7 @@ function inspect(){
     let info='';
     try{
       const p=JSON.parse(raw);
+      parsedByKey[key]=p;
       if(p&&typeof p==='object'){
         const tasks=Array.isArray(p.tasks)?p.tasks.length:null;
         const memos=Array.isArray(p.memoNotes)?p.memoNotes.length:null;
@@ -47,24 +49,70 @@ function inspect(){
     }catch{}
     rows.push('<div class="card"><strong>'+esc(key)+'</strong><div class="small">'+esc(info||('文字数 '+(raw?.length||0)))+'</div></div>');
   }
-  const main=localStorage.getItem('smartScheduleDataV1');
-  if(main){
-    try{
-      const p=JSON.parse(main);
-      const tc=Array.isArray(p.tasks)?p.tasks.length:0;
-      const mc=Array.isArray(p.memoNotes)?p.memoNotes.length:0;
-      result.innerHTML='<div class="card '+(tc||mc?'ok':'warn')+'"><strong>smartScheduleDataV1 が見つかりました</strong><p>タスク '+tc+'件 / 付箋 '+mc+'件</p></div>'+
-        (rows.length?'<h2 style="font-size:1rem">このブラウザ内の保存キー</h2>'+rows.join(''):'');
-    }catch(e){
-      result.innerHTML='<div class="card warn"><strong>smartScheduleDataV1 はありますがJSONとして読み取れません</strong><pre>'+esc(main.slice(0,2000))+'</pre></div>'+rows.join('');
-    }
+
+  const mainKey='smartScheduleDataV1';
+  const backupKey='smartScheduleDataBackupV1';
+  const main=parsedByKey[mainKey];
+  const backup=parsedByKey[backupKey];
+
+  const count=function(p){
+    return {
+      tasks:p&&Array.isArray(p.tasks)?p.tasks.length:0,
+      memos:p&&Array.isArray(p.memoNotes)?p.memoNotes.length:0
+    };
+  };
+  const mc=count(main), bc=count(backup);
+  const mainScore=mc.tasks+mc.memos;
+  const backupScore=bc.tasks+bc.memos;
+
+  let summary=
+    '<div class="card '+(mainScore?'ok':'warn')+'">'+
+      '<strong>現在のメインデータ</strong>'+
+      '<p>タスク '+mc.tasks+'件 / 付箋 '+mc.memos+'件</p>'+
+    '</div>'+
+    '<div class="card '+(backupScore?'ok':'warn')+'">'+
+      '<strong>自動バックアップ</strong>'+
+      '<p>タスク '+bc.tasks+'件 / 付箋 '+bc.memos+'件</p>'+
+    '</div>';
+
+  if(mainScore||backupScore){
+    const restoreKey=backupScore>mainScore?backupKey:mainKey;
+    const rc=restoreKey===backupKey?bc:mc;
+    summary+=
+      '<div class="card ok">'+
+        '<strong>復旧候補</strong>'+
+        '<p>タスク '+rc.tasks+'件 / 付箋 '+rc.memos+'件のデータを使えます。</p>'+
+        '<button id="restoreBest" class="primary">このデータでSmart Scheduleを復旧</button>'+
+      '</div>';
+    setTimeout(()=>{
+      const b=document.getElementById('restoreBest');
+      if(b)b.onclick=()=>restoreBestData(restoreKey);
+    },0);
   }else{
-    result.innerHTML='<div class="card warn"><strong>smartScheduleDataV1 が見つかりません</strong><p>このブラウザ・このプロフィールの保存領域には現在のSmart Scheduleデータがありません。</p></div>'+
-      (rows.length?'<h2 style="font-size:1rem">ただし別の保存キーはあります</h2>'+rows.join(''):'<p>localStorage自体が空です。</p>');
+    summary+='<div class="card warn"><strong>復旧候補が見つかりません</strong><p>このブラウザ内ではタスク・付箋の入ったデータを確認できませんでした。</p></div>';
   }
+
+  result.innerHTML=summary+'<h2 style="font-size:1rem">このブラウザ内の保存キー</h2>'+rows.join('');
   window.__backup=all;
 }
-inspect();
+
+function restoreBestData(key){
+  const raw=localStorage.getItem(key);
+  if(!raw)return alert('復旧元データが見つかりません。');
+  let p;
+  try{p=JSON.parse(raw)}catch{return alert('復旧元データを読み取れませんでした。')}
+  const tc=Array.isArray(p.tasks)?p.tasks.length:0;
+  const mc=Array.isArray(p.memoNotes)?p.memoNotes.length:0;
+  if(!tc&&!mc)return alert('復旧できるタスク・付箋がありません。');
+
+  if(!confirm('タスク '+tc+'件・付箋 '+mc+'件の状態に復旧します。よろしいですか？'))return;
+
+  localStorage.setItem('smartScheduleDataV1',raw);
+  localStorage.setItem('smartScheduleDataBackupV1',raw);
+  alert('復旧データを書き戻しました。Smart Scheduleを開きます。');
+  location.href='./smart-schedule-v2.html?recovered=1';
+}
+
 document.getElementById('reload').onclick=inspect;
 document.getElementById('resetSw').onclick=async()=>{
   if(!confirm('タスクや付箋は消さず、Smart Scheduleの表示キャッシュだけをリセットします。実行しますか？'))return;
