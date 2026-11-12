@@ -1,9 +1,9 @@
-const CACHE_NAME='smart-schedule-pwa-v30';
+const CACHE_NAME='smart-schedule-pwa-v31';
 const APP_SHELL=[
-  './',
+  './smart-schedule-v2.html',
   './index.html',
   './styles-v32.css',
-  './app-v46.js',
+  './app-v47.js',
   './manifest.webmanifest',
   './icon-192-v3.svg',
   './icon-512-v3.svg',
@@ -33,6 +33,6 @@ self.addEventListener('fetch',event=>{
         caches.open(CACHE_NAME).then(cache=>cache.put(event.request,copy));
         return response;
       })
-      .catch(()=>caches.match(event.request).then(cached=>cached||caches.match('./index.html')))
+      .catch(()=>caches.match(event.request).then(cached=>cached||caches.match('./smart-schedule-v2.html')))
   );
 });
