@@ -12,7 +12,7 @@
   <link rel="manifest" href="manifest.webmanifest?v=3">
   <link rel="icon" href="icon-192-v3.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="icon-192-v3.svg">
-  <link rel="stylesheet" href="styles-v32.css">
+  <link rel="stylesheet" href="styles-v33.css">
 </head>
 <body>
   <div id="storageBootStatus" style="position:fixed;right:12px;bottom:12px;z-index:99999;padding:7px 10px;border:1px solid #d7cec4;border-radius:8px;background:#fffdf9;color:#655b52;font:12px/1.35 system-ui,-apple-system,'Segoe UI',sans-serif;box-shadow:0 3px 12px rgba(50,40,30,.12)">
@@ -57,6 +57,7 @@
 
     <main>
       <section id="view-today" class="view active">
+        <div id="dataSafetyBanner" class="data-safety-banner hidden"></div>
         <div id="overloadBanner" class="banner hidden"></div>
 
         <div class="today-layout">
@@ -153,10 +154,16 @@
 
         <section class="panel">
           <h2>データ管理</h2>
-          <p class="muted">データはこのブラウザ内に保存されます。端末をまたいで使う場合は書き出し/読み込みを使ってください。</p>
-          <div class="row wrap">
-            <button id="exportBtn">データを書き出す</button>
-            <label class="file-btn">データを読み込む<input id="importInput" type="file" accept="application/json"></label>
+          <p class="muted">データはこのブラウザ内に保存されます。自動で最大7世代の復旧用バックアップも保持します。</p>
+          <div class="backup-callout">
+            <div>
+              <strong>手動バックアップ</strong>
+              <small>端末故障やブラウザデータ消去にも備えられるため、定期的な保存をおすすめします。</small>
+            </div>
+            <button id="exportBtn" class="primary backup-export-btn">バックアップをダウンロード</button>
+          </div>
+          <div class="row wrap data-secondary-actions">
+            <label class="file-btn">バックアップを読み込む<input id="importInput" type="file" accept="application/json"></label>
             <button id="demoBtn" class="ghost">サンプルデータを入れる</button>
           </div>
           <div class="storage-diagnostic">
@@ -343,7 +350,7 @@
   (function(){
     var boot=document.getElementById('storageBootStatus');
     var s=document.createElement('script');
-    s.src='./app-v50.js?v=20261112-guard1';
+    s.src='./app-v51.js?v=20261112-safety1';
     s.onload=function(){
       if(boot && !boot.textContent.includes('アプリ読込済み')) boot.textContent+=' / JS読込完了';
     };
