@@ -113,6 +113,7 @@ function restoreBestData(key){
   location.href='./smart-schedule-v2.html?recovered=1';
 }
 
+inspect();
 document.getElementById('reload').onclick=inspect;
 document.getElementById('resetSw').onclick=async()=>{
   if(!confirm('タスクや付箋は消さず、Smart Scheduleの表示キャッシュだけをリセットします。実行しますか？'))return;
