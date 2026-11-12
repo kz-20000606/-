@@ -24,6 +24,7 @@ pre{white-space:pre-wrap;word-break:break-word;font-size:.8rem;background:#f7f5f
 <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:16px">
 <button id="download" class="primary">現在のlocalStorageをバックアップ</button>
 <button id="reload">再確認</button>
+<button id="resetSw">表示キャッシュだけリセット</button>
 </div>
 <script>
 const result=document.getElementById('result');
@@ -65,6 +66,23 @@ function inspect(){
 }
 inspect();
 document.getElementById('reload').onclick=inspect;
+document.getElementById('resetSw').onclick=async()=>{
+  if(!confirm('タスクや付箋は消さず、Smart Scheduleの表示キャッシュだけをリセットします。実行しますか？'))return;
+  try{
+    if('serviceWorker' in navigator){
+      const regs=await navigator.serviceWorker.getRegistrations();
+      await Promise.all(regs.map(r=>r.unregister()));
+    }
+    if('caches' in window){
+      const keys=await caches.keys();
+      await Promise.all(keys.filter(k=>k.startsWith('smart-schedule-pwa-')).map(k=>caches.delete(k)));
+    }
+    alert('表示キャッシュをリセットしました。タスク・付箋データは残っています。Smart Schedule本体を開き直します。');
+    location.href='./?fresh=20261112-1';
+  }catch(e){
+    alert('表示キャッシュのリセットに失敗しました: '+e.message);
+  }
+};
 document.getElementById('download').onclick=()=>{
   const blob=new Blob([JSON.stringify(window.__backup||{},null,2)],{type:'application/json'});
   const a=document.createElement('a');
