@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Smart Schedule データ確認 v2</title>
+<style>
+body{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;background:#f5f3ef;color:#2f2b27;margin:0;padding:24px}
+main{max-width:780px;margin:auto;background:#fffdf9;border:1px solid #ddd5cb;border-radius:14px;padding:22px;box-shadow:0 8px 30px rgba(50,40,30,.08)}
+h1{font-size:1.4rem;margin-top:0}
+.card{border:1px solid #e2dbd2;border-radius:10px;padding:14px;margin:12px 0;background:#fff}
+.ok{border-color:#a8c39c;background:#f4faf1}.warn{border-color:#d9b18e;background:#fff8f1}
+button{padding:9px 13px;border:1px solid #cfc5bb;border-radius:8px;background:#fff;cursor:pointer}
+button.primary{background:#6f5f50;color:#fff;border-color:#6f5f50}
+pre{white-space:pre-wrap;word-break:break-word;font-size:.8rem;background:#f7f5f2;padding:10px;border-radius:8px;max-height:220px;overflow:auto}
+.small{color:#746b63;font-size:.88rem}
+</style>
+</head>
+<body>
+<main>
+<h1>Smart Schedule 保存データ確認 v2</h1>
+<p class="small">このページはデータを削除・変更しません。現在のブラウザ内に残っている保存データを確認するだけです。</p>
+<div id="result"></div>
+<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:16px">
+<button id="download" class="primary">現在のlocalStorageをバックアップ</button>
+<button id="reload">再確認</button>
+<button id="resetSw">表示キャッシュだけリセット</button>
+</div>
+<script>
+const result=document.getElementById('result');
+function esc(s){return String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
+function inspect(){
+  const rows=[];
+  const all={};
+  const parsedByKey={};
+  for(let i=0;i<localStorage.length;i++){
+    const key=localStorage.key(i);
+    const raw=localStorage.getItem(key);
+    all[key]=raw;
+    let info='';
+    try{
+      const p=JSON.parse(raw);
+      parsedByKey[key]=p;
+      if(p&&typeof p==='object'){
+        const tasks=Array.isArray(p.tasks)?p.tasks.length:null;
+        const memos=Array.isArray(p.memoNotes)?p.memoNotes.length:null;
+        info=(tasks!==null?'タスク '+tasks+'件':'')+(memos!==null?' / 付箋 '+memos+'件':'');
+      }
+    }catch{}
+    rows.push('<div class="card"><strong>'+esc(key)+'</strong><div class="small">'+esc(info||('文字数 '+(raw?.length||0)))+'</div></div>');
+  }
+
+  const mainKey='smartScheduleDataV1';
+  const backupKey='smartScheduleDataBackupV1';
+  const main=parsedByKey[mainKey];
+  const backup=parsedByKey[backupKey];
+
+  const count=function(p){
+    return {
+      tasks:p&&Array.isArray(p.tasks)?p.tasks.length:0,
+      memos:p&&Array.isArray(p.memoNotes)?p.memoNotes.length:0
+    };
+  };
+  const mc=count(main), bc=count(backup);
+  const mainScore=mc.tasks+mc.memos;
+  const backupScore=bc.tasks+bc.memos;
+
+  let summary=
+    '<div class="card '+(mainScore?'ok':'warn')+'">'+
+      '<strong>現在のメインデータ</strong>'+
+      '<p>タスク '+mc.tasks+'件 / 付箋 '+mc.memos+'件</p>'+
+    '</div>'+
+    '<div class="card '+(backupScore?'ok':'warn')+'">'+
+      '<strong>自動バックアップ</strong>'+
+      '<p>タスク '+bc.tasks+'件 / 付箋 '+bc.memos+'件</p>'+
+    '</div>';
+
+  if(mainScore||backupScore){
+    const restoreKey=backupScore>mainScore?backupKey:mainKey;
+    const rc=restoreKey===backupKey?bc:mc;
+    summary+=
+      '<div class="card ok">'+
+        '<strong>復旧候補</strong>'+
+        '<p>タスク '+rc.tasks+'件 / 付箋 '+rc.memos+'件のデータを使えます。</p>'+
+        '<button id="restoreBest" class="primary">このデータでSmart Scheduleを復旧</button>'+
+      '</div>';
+    setTimeout(()=>{
+      const b=document.getElementById('restoreBest');
+      if(b)b.onclick=()=>restoreBestData(restoreKey);
+    },0);
+  }else{
+    summary+='<div class="card warn"><strong>復旧候補が見つかりません</strong><p>このブラウザ内ではタスク・付箋の入ったデータを確認できませんでした。</p></div>';
+  }
+
+  result.innerHTML=summary+'<h2 style="font-size:1rem">このブラウザ内の保存キー</h2>'+rows.join('');
+  window.__backup=all;
+}
+
+function restoreBestData(key){
+  const raw=localStorage.getItem(key);
+  if(!raw)return alert('復旧元データが見つかりません。');
+  let p;
+  try{p=JSON.parse(raw)}catch{return alert('復旧元データを読み取れませんでした。')}
+  const tc=Array.isArray(p.tasks)?p.tasks.length:0;
+  const mc=Array.isArray(p.memoNotes)?p.memoNotes.length:0;
+  if(!tc&&!mc)return alert('復旧できるタスク・付箋がありません。');
+
+  if(!confirm('タスク '+tc+'件・付箋 '+mc+'件の状態に復旧します。よろしいですか？'))return;
+
+  localStorage.setItem('smartScheduleDataV1',raw);
+  localStorage.setItem('smartScheduleDataBackupV1',raw);
+  alert('復旧データを書き戻しました。Smart Scheduleを開きます。');
+  location.href='./smart-schedule-v2.html?recovered=1';
+}
+
+inspect();
+document.getElementById('reload').onclick=inspect;
+document.getElementById('resetSw').onclick=async()=>{
+  if(!confirm('タスクや付箋は消さず、Smart Scheduleの表示キャッシュだけをリセットします。実行しますか？'))return;
+  try{
+    if('serviceWorker' in navigator){
+      const regs=await navigator.serviceWorker.getRegistrations();
+      await Promise.all(regs.map(r=>r.unregister()));
+    }
+    if('caches' in window){
+      const keys=await caches.keys();
+      await Promise.all(keys.filter(k=>k.startsWith('smart-schedule-pwa-')).map(k=>caches.delete(k)));
+    }
+    alert('表示キャッシュをリセットしました。タスク・付箋データは残っています。Smart Schedule本体を開き直します。');
+    location.href='./?fresh=20261112-1';
+  }catch(e){
+    alert('表示キャッシュのリセットに失敗しました: '+e.message);
+  }
+};
+document.getElementById('download').onclick=()=>{
+  const blob=new Blob([JSON.stringify(window.__backup||{},null,2)],{type:'application/json'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download='smart-schedule-localstorage-backup.json';
+  a.click();
+  setTimeout(()=>URL.revokeObjectURL(a.href),1000);
+};
+</script>
+</main>
+</body>
+</html>
