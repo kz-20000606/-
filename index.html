@@ -15,6 +15,24 @@
   <link rel="stylesheet" href="styles-v32.css">
 </head>
 <body>
+  <div id="storageBootStatus" style="position:fixed;right:12px;bottom:12px;z-index:99999;padding:7px 10px;border:1px solid #d7cec4;border-radius:8px;background:#fffdf9;color:#655b52;font:12px/1.35 system-ui,-apple-system,'Segoe UI',sans-serif;box-shadow:0 3px 12px rgba(50,40,30,.12)">
+    保存データ確認中…
+  </div>
+  <script>
+  (function(){
+    var el=document.getElementById('storageBootStatus');
+    try{
+      var raw=localStorage.getItem('smartScheduleDataV1');
+      if(!raw){el.textContent='保存データ: キーなし';return;}
+      var data=JSON.parse(raw);
+      var tc=Array.isArray(data.tasks)?data.tasks.length:0;
+      var mc=Array.isArray(data.memoNotes)?data.memoNotes.length:0;
+      el.textContent='保存データ: タスク '+tc+'件 / 付箋 '+mc+'件';
+    }catch(e){
+      el.textContent='保存データ読込エラー: '+e.message;
+    }
+  })();
+  </script>
   <div class="app-shell">
     <header class="topbar">
       <div class="brand-block">
@@ -321,6 +339,6 @@
     </form>
   </dialog>
 
-  <script src="app-v39.js></script>
+  <script src="app-v40.js></script>
 </body>
 </html>
