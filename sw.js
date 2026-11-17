@@ -1,4 +1,4 @@
-const CACHE_NAME='smart-schedule-pwa-v40';
+const CACHE_NAME='smart-schedule-pwa-v41';
 const APP_SHELL=[
   './smart-schedule-v3.html',
   './index.html',
@@ -26,6 +26,25 @@ self.addEventListener('activate',event=>{
 
 self.addEventListener('fetch',event=>{
   if(event.request.method!=='GET')return;
+
+  const url=new URL(event.request.url);
+  const isLegacyLaunch =
+    event.request.mode==='navigate' &&
+    (url.pathname.endsWith('/smart-schedule-v2.html') || url.pathname.endsWith('/index.html') || url.pathname.endsWith('/-/' ));
+
+  if(isLegacyLaunch){
+    event.respondWith(
+      fetch('./smart-schedule-v3.html',{cache:'no-store'})
+        .then(response=>{
+          const copy=response.clone();
+          caches.open(CACHE_NAME).then(cache=>cache.put('./smart-schedule-v3.html',copy));
+          return response;
+        })
+        .catch(()=>caches.match('./smart-schedule-v3.html'))
+    );
+    return;
+  }
+
   event.respondWith(
     fetch(event.request)
       .then(response=>{
