@@ -4,7 +4,7 @@
   "short_name": "Smart Schedule",
   "description": "手帳のようにタスクと時間割、付箋を管理できるスケジュールアプリ",
   "lang": "ja",
-  "start_url": "./smart-schedule-v2.html",
+  "start_url": "./smart-schedule-v3.html",
   "scope": "./",
   "display": "standalone",
   "background_color": "#f5f4f1",
