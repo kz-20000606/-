@@ -1,9 +1,9 @@
-const CACHE_NAME='smart-schedule-pwa-v41';
+const CACHE_NAME='smart-schedule-pwa-v42';
 const APP_SHELL=[
   './smart-schedule-v3.html',
   './index.html',
-  './styles-v34.css',
-  './app-v56.js',
+  './styles-v35.css',
+  './app-v57.js',
   './manifest.webmanifest',
   './icon-192-v3.svg',
   './icon-512-v3.svg',
